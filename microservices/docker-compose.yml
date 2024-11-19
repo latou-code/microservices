@@ -1,0 +1,87 @@
+version: '3'
+services:
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "50051:50051"
+    depends_on:
+      - db-auth
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "50052:50052"
+    depends_on:
+      - db-product
+
+  cart-service:
+    build: ./cart-service
+    ports:
+      - "50053:50053"
+    depends_on:
+      - db-cart
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "50054:50054"
+    depends_on:
+      - db-order
+      - inventory-service   # Добавляем зависимость
+
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "50055:50055"
+
+  inventory-service:
+    build: ./inventory-service
+    ports:
+      - "50056:50056"
+    depends_on:
+      - db-inventory
+
+  db-auth:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: auth_service
+    ports:
+      - "5432:5432"
+
+  db-product:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: product_service
+    ports:
+      - "5433:5432"
+
+  db-cart:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cart_service
+    ports:
+      - "5434:5432"
+
+  db-order:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: order_service
+    ports:
+      - "5435:5432"
+
+  db-inventory:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: inventory_service
+    ports:
+      - "5436:5432"

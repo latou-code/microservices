@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package inventory;
+
+service InventoryService {
+  // Проверить наличие продукта на складе
+  rpc CheckStock(CheckStockRequest) returns (CheckStockResponse);
+  
+  // Уменьшить количество товара на складе при оформлении заказа
+  rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
+}
+
+message CheckStockRequest {
+  int32 product_id = 1;
+}
+
+message CheckStockResponse {
+  bool in_stock = 1;
+  int32 available_quantity = 2;
+}
+
+message DecreaseStockRequest {
+  int32 product_id = 1;
+  int32 quantity = 2;
+}
+
+message DecreaseStockResponse {
+  bool success = 1;
+  string message = 2;
+}
